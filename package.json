@@ -1,24 +1,20 @@
 {
-  "publisher": "antfu",
+  "publisher": "Ray-D-Song",
   "name": "ext-name",
   "displayName": "ext-name",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@9.7.0",
   "description": "",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "author": "Ray-D-Song <songraysmail@gmail.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/ext-name#readme",
+  "homepage": "https://github.com/ray-d-song/markdown-translator#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/antfu/ext-name"
+    "url": "https://github.com/ray-d-song/markdown-translator"
   },
   "bugs": {
-    "url": "https://github.com/antfu/ext-name/issues"
-  },
-  "sponsor": {
-    "url": "https://github.com/sponsors/antfu"
+    "url": "https://github.com/ray-d-song/markdown-translator/issues"
   },
   "categories": [
     "Other"
@@ -35,7 +31,12 @@
     "onStartupFinished"
   ],
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "command": "markdown translator.translate",
+        "title": "markdown translator: Select source file and translate"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "ext-name",

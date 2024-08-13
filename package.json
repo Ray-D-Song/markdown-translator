@@ -33,7 +33,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "markdown translator.translate",
+        "command": "markdown-translator.translate",
         "title": "markdown translator: Select source file and translate"
       }
     ],

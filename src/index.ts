@@ -1,50 +1,34 @@
-import { defineExtension, useCommand, useQuickPick, useStatusBarItem, useWorkspaceFolders } from 'reactive-vscode'
-import { FileType, type Uri, window, workspace } from 'vscode'
-import { getAllDir } from './utils/fs-utils'
+import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode'
+import { window } from 'vscode'
+import { selectDir, selectFile } from './utils/file'
+import { processTranslate } from './processTranslate'
+import { logger } from './utils/logger'
 
 const { activate, deactivate } = defineExtension(() => {
+  const config = defineConfigObject('markdownTranslator', {
+    apiKey: String,
+    endpoint: String,
+    httpsProxy: String,
+    prompt: String,
+    targetLanguage: String,
+    model: String,
+    temperature: Number,
+    fragmentSize: Number,
+    apiCallInterval: Number,
+    codeBlockPreservationLines: Number,
+  })
+
   useCommand('markdown-translator.translate', async () => {
-    await selectWorkspaceFile()
+    try {
+      const { inputFile, fileName } = await selectFile()
+      const outputDir = await selectDir()
+      const outputPath = `${outputDir}/${fileName}`
+      await processTranslate(inputFile, outputPath, config)
+    }
+    catch (error) {
+      window.showErrorMessage((error as Error).message)
+    }
   })
 })
-
-async function selectWorkspaceFile() {
-  const files: Uri[] = await workspace.findFiles('**/*.{md,mdx}', '**/node_modules/**')
-  const fileItems = files.map(file => ({
-    label: workspace.asRelativePath(file),
-    description: workspace.asRelativePath(file),
-  }))
-
-  const selectedFile = await window.showQuickPick(fileItems, {
-    placeHolder: 'Select input files',
-  })
-  if (!selectedFile) {
-    return
-  }
-
-  const dirs = await getAllDir()
-  const outputPath = await window.showQuickPick(
-    dirs.map(dir => ({
-      label: workspace.asRelativePath(dir.name),
-      description: workspace.asRelativePath(dir.path),
-    })) ?? [],
-    {
-      placeHolder: 'Select output directory',
-    },
-  )
-  if (!outputPath) {
-    return
-  }
-
-  window.showInformationMessage(`Start translate: ${selectedFile.label.split('/').pop()}`)
-  const bar = useStatusBarItem({
-    text: `Translating 0%`,
-  })
-  bar.show()
-  setTimeout(() => {
-    bar.text = `Translating 50%`
-    window.showInformationMessage(`Translated: ${selectedFile.label.split('/').pop()}`)
-  }, 3000)
-}
 
 export { activate, deactivate }

@@ -1,11 +1,11 @@
 {
   "publisher": "Ray-D-Song",
-  "name": "ext-name",
-  "displayName": "ext-name",
-  "version": "0.0.0",
+  "name": "vscode markdown translator",
+  "displayName": "markdown translator",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@9.7.0",
-  "description": "",
+  "description": "Markdown Translator with ChatGPT",
   "author": "Ray-D-Song <songraysmail@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/ray-d-song/markdown-translator#readme",
@@ -37,10 +37,69 @@
         "title": "markdown translator: Select source file and translate"
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorLangId == markdown",
+          "command": "markdown-translator.translate",
+          "group": "navigation"
+        }
+      ]
+    },
     "configuration": {
-      "type": "object",
-      "title": "ext-name",
-      "properties": {}
+      "title": "markdown translator",
+      "properties": {
+        "markdownTranslator.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API key"
+        },
+        "markdownTranslator.endpoint": {
+          "type": "string",
+          "default": "https://api.openai.com/v1/chat/completions",
+          "description": "OpenAI API endpoint, you can change this to use third-party API"
+        },
+        "markdownTranslator.httpsProxy": {
+          "type": "string",
+          "default": "",
+          "description": "https proxy"
+        },
+        "markdownTranslator.targetLanguage": {
+          "type": "string",
+          "default": "English",
+          "description": "target language"
+        },
+        "markdownTranslator.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "OpenAI model"
+        },
+        "markdownTranslator.temperature": {
+          "type": "number",
+          "default": 0.1,
+          "description": "Randomness of the generated text"
+        },
+        "markdownTranslator.apiCallInterval": {
+          "type": "number",
+          "default": 0,
+          "description": "If you hit the API rate limit, you can set this to a positive number"
+        },
+        "markdownTranslator.fragmentSize": {
+          "type": "number",
+          "default": 2048,
+          "description": "The maximum number of characters for each API call"
+        },
+        "markdownTranslator.codeBlockPreservationLines": {
+          "type": "number",
+          "default": 5,
+          "description": "The maximum number of lines for code blocks, sent to the API as-is for context"
+        },
+        "markdownTranslator.prompt": {
+          "type": "string",
+          "default": "I am translating the documentation for Developer.\nTranslate the Markdown content I'll paste later into %%%%%.\n\nYou must strictly follow the rules below.\n\n- Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n- Never change the contents of code blocks even if they appear to have a bug.\n- Always preserve the original line breaks. Do not add or remove blank lines.\n- Never touch the permalink such as `{/*examples*/}` at the end of each heading.\n- Never touch HTML-like tags such as `<Notes>`.",
+          "description": "Prompt for translate"
+        }
+      }
     }
   },
   "scripts": {
@@ -56,10 +115,15 @@
     "typecheck": "tsc --noEmit",
     "release": "bumpp && nr publish"
   },
+  "dependencies": {
+    "glob": "^11.0.0",
+    "node-fetch": "2"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.25.1",
     "@antfu/ni": "^0.22.1",
     "@types/node": "^22.2.0",
+    "@types/node-fetch": "^2.6.11",
     "@types/vscode": "^1.92.0",
     "@vscode/vsce": "^2.31.1",
     "bumpp": "^9.5.0",

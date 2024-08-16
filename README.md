@@ -1,4 +1,4 @@
-[中文](https://github.com/Ray-D-Song/markdown-translator)|[English](https://github.com/Ray-D-Song/markdown-translator/README_en.md)
+[中文](https://github.com/Ray-D-Song/markdown-translator) | [English](https://github.com/Ray-D-Song/markdown-translator/blob/main/README_en.md)
 
 # Markdown Translator
 使用 ChatGPT 翻译 markdown 文件的 vscode 插件.

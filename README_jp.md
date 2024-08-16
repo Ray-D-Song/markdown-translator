@@ -1,14 +1,12 @@
-[中文](https://github.com/Ray-D-Song/markdown-translator) | [English](https://github.com/Ray-D-Song/markdown-translator/blob/main/README_en.md) | [English](https://github.com/Ray-D-Song/markdown-translator/blob/main/README_jp.md)
-
 # Markdown Translator
-使用 ChatGPT 翻译 markdown 文件的 vscode 插件.
-你可以用它来翻译你的博客或说明到别的语言, 或者翻译他人的文档来帮助你阅读.
+ChatGPTを使用してMarkdownファイルを翻訳するVSCodeプラグインです。
+ブログや説明書を他の言語に翻訳したり、他の人のドキュメントを翻訳して読むのに役立てることができます。
 
-## 使用说明
-安装插件后, 进入`设置`, 搜索`markdown translator`, 设置`Api Key`和`Target Language`.
-然后打开你需要翻译的 markdown 文件, 右键选择 translate 就会开始翻译. (或者在命令面板选择 markdown translator)
+## 使用方法
+プラグインをインストールしたら、`設定`に移動し、`markdown translator`を検索して`Api Key`と`Target Language`を設定します。
+次に翻訳したいMarkdownファイルを開き、右クリックして`translate`を選択すると翻訳が開始されます（またはコマンドパネルで`markdown translator`を選択します）。
 
-以下是完整配置项:
+以下は完全な設定項目です:
 ```json
 {
   "markdownTranslator.apiKey": {
@@ -64,10 +62,10 @@
 }
 ```
 
-## 已知问题
-* 无法翻译代码中的注释
+## Known Issues
+* コード内のコメントを翻訳できません
 
-## 感谢
+## Special Thanks
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)
 * [_Kerman](https://github.com/KermanX): [reactive-vscode](https://github.com/KermanX/reactive-vscode)
 * [smikitky](https://github.com/smikitky): [chatgpt-md-translator](https://github.com/smikitky/chatgpt-md-translator)

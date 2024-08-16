@@ -1,7 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import type { StatusBarItem } from 'vscode'
 import type { Config } from '../types'
-import { logger } from '../utils/logger'
 import configureApiCaller from './api'
 import { replaceCodeBlocks, restoreCodeBlocks, splitStringAtBlankLines } from './md'
 import { translateMultiple } from './translate'

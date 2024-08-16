@@ -2,7 +2,6 @@ import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode
 import { window, workspace } from 'vscode'
 import { selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
-import { logger } from './utils/logger'
 
 const { activate, deactivate } = defineExtension(() => {
   const config = defineConfigObject('markdownTranslator', {

@@ -35,14 +35,18 @@
       {
         "command": "markdown-translator.translate",
         "title": "markdown translator: Select source file and translate"
+      },
+      {
+        "command": "markdown-translator.translateCurrent",
+        "title": "markdown translator: Translate current file"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "when": "editorLangId == markdown",
-          "command": "markdown-translator.translate",
-          "group": "navigation"
+          "when": "editorLangId == markdown || editorLangId == mdx",
+          "command": "markdown-translator.translateCurrent",
+          "group": "9_localization"
         }
       ]
     },

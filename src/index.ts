@@ -1,5 +1,5 @@
 import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode'
-import { window } from 'vscode'
+import { window, workspace } from 'vscode'
 import { selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
 import { logger } from './utils/logger'
@@ -33,6 +33,35 @@ const { activate, deactivate } = defineExtension(() => {
       }
 
       await processTranslate(inputFile, outputPath, config, needOverwrite)
+    }
+    catch (error) {
+      window.showErrorMessage((error as Error).message)
+    }
+  })
+
+  useCommand('markdown-translator.translateCurrent', async () => {
+    try {
+      const editor = window.activeTextEditor
+      if (editor) {
+        const inputPath = editor.document.uri.fsPath
+        const document = await workspace.openTextDocument(editor.document.uri)
+        const inputFile = document.getText()
+        const fileName = inputPath.split('/').pop() || ''
+
+        let needOverwrite = false
+        const outputDir = await selectDir()
+        let outputPath = `${outputDir}/${fileName}`
+        if (inputPath === outputPath && !config.overwrite) {
+          outputPath = `${outputDir}/translated-${fileName}`
+        }
+        if (inputPath === outputPath && config.overwrite) {
+          needOverwrite = true
+        }
+        await processTranslate(inputFile, outputPath, config, needOverwrite)
+      }
+      else {
+        window.showInformationMessage('No active editor')
+      }
     }
     catch (error) {
       window.showErrorMessage((error as Error).message)

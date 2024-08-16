@@ -2,6 +2,7 @@ import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode
 import { window, workspace } from 'vscode'
 import { selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
+import { logger } from './utils/logger'
 
 const { activate, deactivate } = defineExtension(() => {
   const config = defineConfigObject('markdownTranslator', {
@@ -10,7 +11,6 @@ const { activate, deactivate } = defineExtension(() => {
     httpsProxy: String,
     prompt: String,
     targetLanguage: String,
-    overwrite: Boolean,
     model: String,
     temperature: Number,
     fragmentSize: Number,
@@ -23,15 +23,12 @@ const { activate, deactivate } = defineExtension(() => {
       const { inputFile, fileName, filePath: inputPath } = await selectFile()
       const outputDir = await selectDir()
       let outputPath = `${outputDir}/${fileName}`
-      let needOverwrite = false
-      if (inputPath === outputPath && !config.overwrite) {
+
+      if (inputPath === outputPath) {
         outputPath = `${outputDir}/translated-${fileName}`
       }
-      if (inputPath === outputPath && config.overwrite) {
-        needOverwrite = true
-      }
 
-      await processTranslate(inputFile, outputPath, config, needOverwrite)
+      await processTranslate(inputFile, outputPath, config)
     }
     catch (error) {
       window.showErrorMessage((error as Error).message)
@@ -47,16 +44,14 @@ const { activate, deactivate } = defineExtension(() => {
         const inputFile = document.getText()
         const fileName = inputPath.split('/').pop() || ''
 
-        let needOverwrite = false
         const outputDir = await selectDir()
         let outputPath = `${outputDir}/${fileName}`
-        if (inputPath === outputPath && !config.overwrite) {
+
+        if (inputPath === outputPath) {
           outputPath = `${outputDir}/translated-${fileName}`
         }
-        if (inputPath === outputPath && config.overwrite) {
-          needOverwrite = true
-        }
-        await processTranslate(inputFile, outputPath, config, needOverwrite)
+
+        await processTranslate(inputFile, outputPath, config)
       }
       else {
         window.showInformationMessage('No active editor')

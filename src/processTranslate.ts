@@ -4,7 +4,7 @@ import { window } from 'vscode'
 import { translateFile } from './core/translateFile'
 
 // TODO: better types
-async function processTranslate(inputFile: string, outputPath: string, config: ConfigObject<any>, needOverwrite: boolean) {
+async function processTranslate(inputFile: string, outputPath: string, config: ConfigObject<any>) {
   window.showInformationMessage(`Start translate`)
   const bar = useStatusBarItem({
     text: `markdown translator:    `,
@@ -16,7 +16,6 @@ async function processTranslate(inputFile: string, outputPath: string, config: C
     apiKey: config.apiKey,
     prompt: config.prompt.replace('%%%%%', config.targetLanguage),
     model: config.model,
-    needOverwrite,
     apiCallInterval: config.apiCallInterval,
     fragmentSize: config.fragmentSize,
     temperature: config.temperature,

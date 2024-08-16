@@ -46,7 +46,7 @@ async function translateFile(
   const translatedText = (result as DoneStatus).translation
   const finalResult = `${restoreCodeBlocks(translatedText, codeBlocks)}\n`
   await writeFile(config.outputPath, processResult(finalResult), {
-    flag: config.needOverwrite ? 'w' : 'wx',
+    flag: 'wx',
   })
 }
 

@@ -2,7 +2,7 @@
   "publisher": "Ray-D-Song",
   "name": "markdown-translator",
   "displayName": "markdown translator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "packageManager": "pnpm@9.7.0",
   "description": "Markdown Translator with ChatGPT",
@@ -21,15 +21,9 @@
   ],
   "main": "./dist/index.js",
   "icon": "res/icon.png",
-  "files": [
-    "dist"
-  ],
   "engines": {
     "vscode": "^1.92.0"
   },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
   "contributes": {
     "commands": [
       {
@@ -73,11 +67,6 @@
           "default": "English",
           "description": "target language"
         },
-        "markdownTranslator.overwrite": {
-          "type": "boolean",
-          "default": "false",
-          "description": "When the paths of the input file and the output file are the same, choose whether to overwrite or create a new file with an appended suffix"
-        },
         "markdownTranslator.model": {
           "type": "string",
           "default": "gpt-3.5-turbo",
@@ -112,17 +101,13 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --external vscode",
-    "dev": "nr build --watch",
-    "prepare": "nr update",
+    "build": "rollup --config",
     "update": "vscode-ext-gen --output src/generated/meta.ts",
     "lint": "eslint .",
-    "vscode:prepublish": "nr build",
-    "publish": "vsce publish --no-dependencies",
-    "pack": "vsce package --no-dependencies",
+    "publish": "vsce publish",
+    "pack": "vsce package",
     "test": "vitest",
-    "typecheck": "tsc --noEmit",
-    "release": "bumpp && nr publish"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "glob": "^11.0.0",
@@ -131,6 +116,10 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.25.1",
     "@antfu/ni": "^0.22.1",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^22.2.0",
     "@types/node-fetch": "^2.6.11",
     "@types/vscode": "^1.92.0",
@@ -140,7 +129,8 @@
     "esno": "^4.7.0",
     "pnpm": "^9.7.0",
     "reactive-vscode": "0.2.0-beta.9",
-    "tsup": "^8.2.4",
+    "rollup": "^4.20.0",
+    "rollup-plugin-terser": "^7.0.2",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vitest": "^2.0.5",

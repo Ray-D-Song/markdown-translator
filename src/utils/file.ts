@@ -33,7 +33,7 @@ async function selectDir() {
     dirItems = dirItems.concat(dirs.map(dir => ({
       label: dir.split('/').filter(Boolean).pop() || '',
       description: dir,
-      fsPath: `${folder.uri.fsPath}/${dir}`,
+      fsPath: dir === '.' ? `${folder.uri.fsPath}` : `${folder.uri.fsPath}/${dir}`,
     })))
   }
 

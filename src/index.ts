@@ -11,6 +11,7 @@ const { activate, deactivate } = defineExtension(() => {
     httpsProxy: String,
     prompt: String,
     targetLanguage: String,
+    overwrite: Boolean,
     model: String,
     temperature: Number,
     fragmentSize: Number,
@@ -20,10 +21,18 @@ const { activate, deactivate } = defineExtension(() => {
 
   useCommand('markdown-translator.translate', async () => {
     try {
-      const { inputFile, fileName } = await selectFile()
+      const { inputFile, fileName, filePath: inputPath } = await selectFile()
       const outputDir = await selectDir()
-      const outputPath = `${outputDir}/${fileName}`
-      await processTranslate(inputFile, outputPath, config)
+      let outputPath = `${outputDir}/${fileName}`
+      let needOverwrite = false
+      if (inputPath === outputPath && !config.overwrite) {
+        outputPath = `${outputDir}/translated-${fileName}`
+      }
+      if (inputPath === outputPath && config.overwrite) {
+        needOverwrite = true
+      }
+
+      await processTranslate(inputFile, outputPath, config, needOverwrite)
     }
     catch (error) {
       window.showErrorMessage((error as Error).message)

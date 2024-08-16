@@ -1,6 +1,6 @@
 {
   "publisher": "Ray-D-Song",
-  "name": "vscode markdown translator",
+  "name": "markdown-translator",
   "displayName": "markdown translator",
   "version": "0.1.0",
   "private": true,
@@ -68,6 +68,11 @@
           "type": "string",
           "default": "English",
           "description": "target language"
+        },
+        "markdownTranslator.overwrite": {
+          "type": "boolean",
+          "default": "false",
+          "description": "When the paths of the input file and the output file are the same, choose whether to overwrite or create a new file with an appended suffix"
         },
         "markdownTranslator.model": {
           "type": "string",

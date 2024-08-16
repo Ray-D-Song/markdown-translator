@@ -1,5 +1,4 @@
 import type { Config } from '../types.js'
-import { logger } from '../utils/logger.js'
 import type { ApiCaller } from './api.js'
 import {
   type DoneStatus,
@@ -37,9 +36,9 @@ export async function translateOne(callApi: ApiCaller, text: string, config: Con
 }
 
 export async function translateMultiple(callApi: ApiCaller, fragments: string[], config: Config, onStatus: (status: Status) => void, signal?: AbortSignal): Promise<SettledStatus> {
-  let members: Status[] = Array.from({ length: fragments.length }).fill({
+  let members = Array.from({ length: fragments.length }).fill({
     status: 'waiting',
-  })
+  }) as Status[]
 
   const abortController = new AbortController()
   const combinedSignal = signal
@@ -55,7 +54,6 @@ export async function translateMultiple(callApi: ApiCaller, fragments: string[],
         if (status.status === 'error')
           abortController.abort()
       }
-      logger.info(`Translating fragment ${index + 1}/${fragments.length}`)
       return translateOne(
         callApi,
         fragment,

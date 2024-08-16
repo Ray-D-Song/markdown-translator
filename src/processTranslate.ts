@@ -4,10 +4,10 @@ import { window } from 'vscode'
 import { translateFile } from './core/translateFile'
 
 // TODO: better types
-async function processTranslate(inputFile: string, outputPath: string, config: ConfigObject<any>) {
+async function processTranslate(inputFile: string, outputPath: string, config: ConfigObject<any>, needOverwrite: boolean) {
   window.showInformationMessage(`Start translate`)
   const bar = useStatusBarItem({
-    text: `Translating 0%`,
+    text: `markdown translator:    `,
   })
   bar.show()
 
@@ -16,6 +16,7 @@ async function processTranslate(inputFile: string, outputPath: string, config: C
     apiKey: config.apiKey,
     prompt: config.prompt.replace('%%%%%', config.targetLanguage),
     model: config.model,
+    needOverwrite,
     apiCallInterval: config.apiCallInterval,
     fragmentSize: config.fragmentSize,
     temperature: config.temperature,
@@ -23,7 +24,8 @@ async function processTranslate(inputFile: string, outputPath: string, config: C
     httpsProxy: config.httpsProxy,
     outputPath,
   }
-  await translateFile(inputFile, translateConfig)
+  await translateFile(inputFile, translateConfig, bar)
+  bar.hide()
 }
 
 export {

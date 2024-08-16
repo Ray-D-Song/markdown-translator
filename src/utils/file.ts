@@ -21,7 +21,7 @@ async function selectFile() {
   const document = await workspace.openTextDocument(inFileItem.uri)
   const inputFile = document.getText()
 
-  return { inputFile, fileName: inFileItem.label }
+  return { inputFile, fileName: inFileItem.label, filePath: inFileItem.uri.fsPath }
 }
 
 async function selectDir() {

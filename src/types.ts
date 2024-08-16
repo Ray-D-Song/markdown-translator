@@ -3,6 +3,7 @@ export interface Config {
   apiKey: string
   prompt: string
   model: string
+  needOverwrite: boolean
   apiCallInterval: number
   fragmentSize: number
   temperature: number

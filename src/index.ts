@@ -18,14 +18,14 @@ const { activate, deactivate } = defineExtension(() => {
     fragmentSize: Number,
     apiCallInterval: Number,
     codeBlockPreservationLines: Number,
-    concurrent: Boolean
+    concurrent: Boolean,
   })
 
   useCommand('markdown-translator.translate', async () => {
     try {
       const { input, fileName, from } = await selectFile()
       const toDir = await selectDir()
-      let to = `${toDir}/${fileName}`
+      const to = `${toDir}/${fileName}`
 
       const mdFile = new MDFile(
         from,
@@ -58,7 +58,7 @@ const { activate, deactivate } = defineExtension(() => {
         const fileName = from.split('/').pop() || ''
 
         const toDir = await selectDir()
-        let to = `${toDir}/${fileName}`
+        const to = `${toDir}/${fileName}`
 
         const mdFile = new MDFile(
           from,
@@ -86,10 +86,32 @@ const { activate, deactivate } = defineExtension(() => {
   })
 
   useCommand('markdown-translator.translateAll', async () => {
-    const mdFiles = await getAllMDFiles()
-    mdFiles.forEach(file => {
-      logger.info(file.fsPath)
-    })
+    try {
+      const mdFiles = await getAllMDFiles()
+      const tasks = mdFiles.map(file =>
+        async () => {
+          const document = await workspace.openTextDocument(file)
+          const input = document.getText()
+          const mdFile = new MDFile(
+            file.fsPath,
+            file.fsPath,
+            input,
+            true,
+          )
+
+          window.showInformationMessage(`Start translate ${mdFile.filename}`)
+          const output = await processTranslate(mdFile.input, pluginConfig)
+          mdFile.setOutput(output)
+          await mdFile.write()
+        })
+
+      for (const task of tasks) {
+        await task()
+      }
+    }
+    catch (error) {
+      window.showErrorMessage((error as Error).message)
+    }
   })
 })
 

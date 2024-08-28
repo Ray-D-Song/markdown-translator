@@ -10,7 +10,9 @@ export default {
     format: 'cjs',
   },
   plugins: [
-    typescript(),
+    typescript({
+      sourceMap: true,
+    }),
     resolve(),
     commonjs(),
     json(),

@@ -1,11 +1,13 @@
-import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode'
+import { defineConfigObject, defineExtension, useCommand, useStatusBarItem, useWorkspaceFolders } from 'reactive-vscode'
 import { window, workspace } from 'vscode'
-import { selectDir, selectFile } from './utils/file'
+import { getAllMDFiles, selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
+import MDFile from './utils/md'
+import bar from './utils/bar'
 import { logger } from './utils/logger'
 
 const { activate, deactivate } = defineExtension(() => {
-  const config = defineConfigObject('markdownTranslator', {
+  const pluginConfig = defineConfigObject('markdownTranslator', {
     apiKey: String,
     endpoint: String,
     httpsProxy: String,
@@ -16,19 +18,30 @@ const { activate, deactivate } = defineExtension(() => {
     fragmentSize: Number,
     apiCallInterval: Number,
     codeBlockPreservationLines: Number,
+    concurrent: Boolean
   })
 
   useCommand('markdown-translator.translate', async () => {
     try {
-      const { inputFile, fileName, filePath: inputPath } = await selectFile()
-      const outputDir = await selectDir()
-      let outputPath = `${outputDir}/${fileName}`
+      const { input, fileName, from } = await selectFile()
+      const toDir = await selectDir()
+      let to = `${toDir}/${fileName}`
 
-      if (inputPath === outputPath) {
-        outputPath = `${outputDir}/translated-${fileName}`
-      }
+      const mdFile = new MDFile(
+        from,
+        to,
+        input,
+      )
 
-      await processTranslate(inputFile, outputPath, config)
+      window.showInformationMessage(`Start translate`)
+
+      bar.show()
+
+      const output = await processTranslate(mdFile.input, pluginConfig)
+      mdFile.setOutput(output)
+      await mdFile.write()
+
+      bar.hide()
     }
     catch (error) {
       window.showErrorMessage((error as Error).message)
@@ -39,19 +52,29 @@ const { activate, deactivate } = defineExtension(() => {
     try {
       const editor = window.activeTextEditor
       if (editor) {
-        const inputPath = editor.document.uri.fsPath
+        const from = editor.document.uri.fsPath
         const document = await workspace.openTextDocument(editor.document.uri)
-        const inputFile = document.getText()
-        const fileName = inputPath.split('/').pop() || ''
+        const input = document.getText()
+        const fileName = from.split('/').pop() || ''
 
-        const outputDir = await selectDir()
-        let outputPath = `${outputDir}/${fileName}`
+        const toDir = await selectDir()
+        let to = `${toDir}/${fileName}`
 
-        if (inputPath === outputPath) {
-          outputPath = `${outputDir}/translated-${fileName}`
-        }
+        const mdFile = new MDFile(
+          from,
+          to,
+          input,
+        )
 
-        await processTranslate(inputFile, outputPath, config)
+        window.showInformationMessage(`Start translate`)
+
+        bar.show()
+
+        const output = await processTranslate(mdFile.input, pluginConfig)
+        mdFile.setOutput(output)
+        await mdFile.write()
+
+        bar.hide()
       }
       else {
         window.showInformationMessage('No active editor')
@@ -60,6 +83,13 @@ const { activate, deactivate } = defineExtension(() => {
     catch (error) {
       window.showErrorMessage((error as Error).message)
     }
+  })
+
+  useCommand('markdown-translator.translateAll', async () => {
+    const mdFiles = await getAllMDFiles()
+    mdFiles.forEach(file => {
+      logger.info(file.fsPath)
+    })
   })
 })
 

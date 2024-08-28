@@ -60,12 +60,20 @@
     "type": "string",
     "default": "I am translating the documentation for Developer.\nTranslate the Markdown content I'll paste later into %%%%%.\n\nYou must strictly follow the rules below.\n\n- Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n- Never change the contents of code blocks even if they appear to have a bug.\n- Always preserve the original line breaks. Do not add or remove blank lines.\n- Never touch the permalink such as `{/*examples*/}` at the end of each heading.\n- Never touch HTML-like tags such as `<Notes>`.",
     "description": "prompt"
+  },
+  "markdownTranslator.concurrent": {
+    "type": "boolean",
+    "default": false,
+    "description": "在多文件翻译的时候是否并发执行"
   }
 }
 ```
 
 ## 已知问题
 * 无法翻译代码中的注释
+
+## v0.2.0
+* 支持翻译整个工作区的md/mdx文件 (覆写原文件)
 
 ## 感谢
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)

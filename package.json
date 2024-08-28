@@ -33,6 +33,10 @@
       {
         "command": "markdown-translator.translateCurrent",
         "title": "markdown translator: Translate current file"
+      },
+      {
+        "command": "markdown-translator.translateAll",
+        "title": "markdown translator: Translate all files in this workspace"
       }
     ],
     "menus": {
@@ -96,17 +100,22 @@
           "type": "string",
           "default": "I am translating the documentation for Developer.\nTranslate the Markdown content I'll paste later into %%%%%.\n\nYou must strictly follow the rules below.\n\n- Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n- Never change the contents of code blocks even if they appear to have a bug.\n- Always preserve the original line breaks. Do not add or remove blank lines.\n- Never touch the permalink such as `{/*examples*/}` at the end of each heading.\n- Never touch HTML-like tags such as `<Notes>`.",
           "description": "Prompt for translate"
+        },
+        "markdownTranslator.concurrent": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether concurrent execution is performed in multi-file translation"
         }
       }
     }
   },
   "scripts": {
+    "dev": "rollup --config --watch",
     "build": "rollup --config",
-    "update": "vscode-ext-gen --output src/generated/meta.ts",
     "lint": "eslint .",
     "publish": "vsce publish",
     "pack": "vsce package",
-    "test": "vitest",
+    "test": "tsx ./src/test/entry.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -115,7 +124,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.25.1",
-    "@antfu/ni": "^0.22.1",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -124,16 +132,12 @@
     "@types/node-fetch": "^2.6.11",
     "@types/vscode": "^1.92.0",
     "@vscode/vsce": "^2.31.1",
-    "bumpp": "^9.5.0",
     "eslint": "^9.9.0",
     "esno": "^4.7.0",
     "pnpm": "^9.7.0",
     "reactive-vscode": "0.2.0-beta.9",
     "rollup": "^4.20.0",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.0",
-    "vitest": "^2.0.5",
-    "vscode-ext-gen": "^0.3.6"
+    "typescript": "^5.5.4"
   }
 }

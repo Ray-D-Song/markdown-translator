@@ -1,6 +1,5 @@
-import { writeFile } from 'node:fs/promises'
-import type { StatusBarItem } from 'vscode'
 import type { Config } from '../types'
+import bar from '../utils/bar'
 import configureApiCaller from './api'
 import { replaceCodeBlocks, restoreCodeBlocks, splitStringAtBlankLines } from './md'
 import { translateMultiple } from './translate'
@@ -10,7 +9,6 @@ import { processResult } from './processResult'
 async function translateFile(
   inFile: string,
   config: Config,
-  statusBar: StatusBarItem,
 ) {
   const markdown = inFile
 
@@ -36,7 +34,7 @@ async function translateFile(
     config,
     (status) => {
       if (isSplitStatus(status)) {
-        statusBar.text = `markdown translator: ${status.members[0].lastToken}`
+        bar.text = `markdown translator: ${status.members[0].lastToken}`
       }
     },
   )
@@ -45,9 +43,7 @@ async function translateFile(
 
   const translatedText = (result as DoneStatus).translation
   const finalResult = `${restoreCodeBlocks(translatedText, codeBlocks)}\n`
-  await writeFile(config.outputPath, processResult(finalResult), {
-    flag: 'wx',
-  })
+  return processResult(finalResult)
 }
 
 function isSplitStatus(status: any): status is { status: 'split', members: { lastToken: string }[] } {

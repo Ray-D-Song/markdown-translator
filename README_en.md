@@ -58,12 +58,20 @@ Here is the complete configuration:
     "type": "string",
     "default": "I am translating the documentation for Developer.\nTranslate the Markdown content I'll paste later into %%%%%.\n\nYou must strictly follow the rules below.\n\n- Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n- Never change the contents of code blocks even if they appear to have a bug.\n- Always preserve the original line breaks. Do not add or remove blank lines.\n- Never touch the permalink such as `{/*examples*/}` at the end of each heading.\n- Never touch HTML-like tags such as `<Notes>`.",
     "description": "Prompt for translate"
+  },
+  "markdownTranslator.concurrent": {
+    "type": "boolean",
+    "default": false,
+    "description": "Whether concurrent execution is performed in multi-file translation"
   }
 }
 ```
 
 ## Known Issues
 * Unable to translate comments within code
+
+## v0.2.0
+* support translate all md/mdx files in workspace (overwrite the original file)
 
 ## Acknowledgements
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)

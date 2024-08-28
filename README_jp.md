@@ -58,12 +58,20 @@ ChatGPTを使用してMarkdownファイルを翻訳するVSCodeプラグイン�
     "type": "string",
     "default": "I am translating the documentation for Developer.\nTranslate the Markdown content I'll paste later into %%%%%.\n\nYou must strictly follow the rules below.\n\n- Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n- Never change the contents of code blocks even if they appear to have a bug.\n- Always preserve the original line breaks. Do not add or remove blank lines.\n- Never touch the permalink such as `{/*examples*/}` at the end of each heading.\n- Never touch HTML-like tags such as `<Notes>`.",
     "description": "prompt"
+  },
+  "markdownTranslator.concurrent": {
+    "type": "boolean",
+    "default": false,
+    "description": "複数のファイル翻訳時に並行して実行されるかどうか"
   }
 }
 ```
 
 ## Known Issues
 * コード内のコメントを翻訳できません
+
+## v0.2.0
+* ワークスペース内のすべての md/mdx ファイルの翻訳をサポート (元のファイルを上書き)
 
 ## Special Thanks
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)

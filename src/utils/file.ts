@@ -2,8 +2,12 @@ import { glob } from 'glob'
 import type { Uri } from 'vscode'
 import { window, workspace } from 'vscode'
 
+async function getAllMDFiles() {
+  return await workspace.findFiles('**/*.{md,mdx}', '**/node_modules/**')
+}
+
 async function selectFile() {
-  const files: Uri[] = await workspace.findFiles('**/*.{md,mdx}', '**/node_modules/**')
+  const files = await getAllMDFiles()
   const fileItems = files.map(file => ({
     label: workspace.asRelativePath(file).split('/').pop() || '',
     description: workspace.asRelativePath(file),
@@ -19,9 +23,9 @@ async function selectFile() {
   }
 
   const document = await workspace.openTextDocument(inFileItem.uri)
-  const inputFile = document.getText()
+  const input = document.getText()
 
-  return { inputFile, fileName: inFileItem.label, filePath: inFileItem.uri.fsPath }
+  return { input, fileName: inFileItem.label, from: inFileItem.uri.fsPath }
 }
 
 async function selectDir() {
@@ -52,4 +56,5 @@ async function selectDir() {
 export {
   selectFile,
   selectDir,
+  getAllMDFiles
 }

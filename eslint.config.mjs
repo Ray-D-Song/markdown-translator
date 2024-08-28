@@ -10,6 +10,8 @@ export default antfu(
   {
     rules: {
       // overrides
+      'test/no-import-node-test': 'off',
+      'test/consistent-test-it': 'off',
     },
   },
 )

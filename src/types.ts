@@ -1,4 +1,4 @@
-export interface Config {
+interface Config {
   apiEndpoint: string
   apiKey: string
   prompt: string
@@ -8,5 +8,8 @@ export interface Config {
   temperature: number
   codeBlockPreservationLines: number
   httpsProxy?: string
-  outputPath: string
+}
+
+export type {
+  Config
 }

@@ -1,15 +1,7 @@
 import type { ConfigObject } from 'reactive-vscode'
-import { useStatusBarItem } from 'reactive-vscode'
-import { window } from 'vscode'
 import { translateFile } from './core/translateFile'
 
-// TODO: better types
-async function processTranslate(inputFile: string, outputPath: string, config: ConfigObject<any>) {
-  window.showInformationMessage(`Start translate`)
-  const bar = useStatusBarItem({
-    text: `markdown translator:    `,
-  })
-  bar.show()
+async function processTranslate(inputFile: string, config: ConfigObject<any>) {
 
   const translateConfig = {
     apiEndpoint: config.endpoint,
@@ -21,10 +13,8 @@ async function processTranslate(inputFile: string, outputPath: string, config: C
     temperature: config.temperature,
     codeBlockPreservationLines: config.codeBlockPreservationLines,
     httpsProxy: config.httpsProxy,
-    outputPath,
   }
-  await translateFile(inputFile, translateConfig, bar)
-  bar.hide()
+  return await translateFile(inputFile, translateConfig)
 }
 
 export {

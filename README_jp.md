@@ -1,10 +1,12 @@
-# Markdown Translator
-ChatGPTを使用してMarkdownファイルを翻訳するVSCodeプラグインです。
-ブログや説明書を他の言語に翻訳したり、他の人のドキュメントを翻訳して読むのに役立てることができます。
+# Markdown Translator { /*examples*/ }
 
-## 使用方法
-プラグインをインストールしたら、`設定`に移動し、`markdown translator`を検索して`Api Key`と`Target Language`を設定します。
-次に翻訳したいMarkdownファイルを開き、右クリックして`translate`を選択すると翻訳が開始されます（またはコマンドパネルで`markdown translator`を選択します）。
+使用 ChatGPT 翻訳 markdown ファイルの vscode プラグイン.
+あなたはそれを使用して、ブログや説明を他の言語に翻訳したり、他の人のドキュメントを翻訳して読むのに役立てることができます.
+
+## 使用方法 { /*examples*/ }
+
+プラグインをインストールしたら、`設定`に入り、`markdown translator`を検索し、`Api Key`と`Target Language`を設定します.
+その後、翻訳したい markdown ファイルを開き、右クリックして translate を選択すると翻訳が開始されます. (またはコマンドパネルで markdown translator を選択します)
 
 以下は完全な設定項目です:
 ```json
@@ -62,18 +64,19 @@ ChatGPTを使用してMarkdownファイルを翻訳するVSCodeプラグイン�
   "markdownTranslator.concurrent": {
     "type": "boolean",
     "default": false,
-    "description": "複数のファイル翻訳時に並行して実行されるかどうか"
+    "description": "在多文件翻译的时候是否并发执行"
   }
 }
 ```
 
-## Known Issues
+## 既知の問題 { /*examples*/ }
 * コード内のコメントを翻訳できません
 
-## v0.2.0
-* ワークスペース内のすべての md/mdx ファイルの翻訳をサポート (元のファイルを上書き)
+## v0.2.0 { /*examples*/ }
+* ファイル処理関連のロジックを書き直しました
+* ワークスペース全体の md/mdx ファイルを翻訳する機能をサポートしました。現在は中国語のみサポートしています (元のファイルを上書き)
 
-## Special Thanks
+## 感謝 { /*examples*/ }
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)
 * [_Kerman](https://github.com/KermanX): [reactive-vscode](https://github.com/KermanX/reactive-vscode)
 * [smikitky](https://github.com/smikitky): [chatgpt-md-translator](https://github.com/smikitky/chatgpt-md-translator)

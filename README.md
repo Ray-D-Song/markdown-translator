@@ -73,7 +73,8 @@
 * 无法翻译代码中的注释
 
 ## v0.2.0
-* 支持翻译整个工作区的md/mdx文件 (覆写原文件)
+* 重写了文件处理相关的逻辑
+* 支持翻译整个工作区的md/mdx文件, 目前仅支持中文 (覆写原文件)
 
 ## 感谢
 * [antfu](https://github.com/antfu): [starter-vscode](https://github.com/antfu/starter-vscode)

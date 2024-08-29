@@ -4,7 +4,7 @@ import { getAllMDFiles, selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
 import MDFile from './utils/md'
 import bar from './utils/bar'
-import { logger } from './utils/logger'
+import { containsChinese } from './utils/char'
 
 const { activate, deactivate } = defineExtension(() => {
   const pluginConfig = defineConfigObject('markdownTranslator', {
@@ -87,26 +87,40 @@ const { activate, deactivate } = defineExtension(() => {
 
   useCommand('markdown-translator.translateAll', async () => {
     try {
-      const mdFiles = await getAllMDFiles()
-      const tasks = mdFiles.map(file =>
-        async () => {
-          const document = await workspace.openTextDocument(file)
-          const input = document.getText()
-          const mdFile = new MDFile(
-            file.fsPath,
-            file.fsPath,
-            input,
-            true,
-          )
+      const tasks: Array<() => PromiseLike<void>> = []
+      const files = await getAllMDFiles()
+      let i = 0
+      let len = 0
+      for (const file of files) {
+        const document = await workspace.openTextDocument(file)
+        const input = document.getText()
+        if (containsChinese(input)) {
+          continue
+        }
+        const mdFile = new MDFile(
+          file.fsPath,
+          file.fsPath,
+          input,
+          true,
+        )
 
-          window.showInformationMessage(`Start translate ${mdFile.filename}`)
+        tasks.push(async () => {
+          window.showInformationMessage(`Start translate ${mdFile.filename}(${++i}/${len})`)
           const output = await processTranslate(mdFile.input, pluginConfig)
           mdFile.setOutput(output)
           await mdFile.write()
         })
+      }
 
-      for (const task of tasks) {
-        await task()
+      len = tasks.length
+      window.showInformationMessage(`${len} files to translate`)
+      if (!pluginConfig.concurrent) {
+        for (const task of tasks) {
+          await task()
+        }
+      }
+      else {
+        await Promise.all(tasks.map(task => task()))
       }
     }
     catch (error) {

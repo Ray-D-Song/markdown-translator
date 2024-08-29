@@ -1,4 +1,4 @@
-const blackList = [`I'm ready`, `Translate`, 'translate', '*examples*']
+const blackList = [`I'm ready`, `Translate`, 'translate', 'examples']
 
 function processResult(result: string) {
   const lines = result.split('\n')

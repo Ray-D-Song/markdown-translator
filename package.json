@@ -36,7 +36,7 @@
       },
       {
         "command": "markdown-translator.translateAll",
-        "title": "markdown translator: Translate all files in this workspace"
+        "title": "markdown translator: Translate all files in this workspace(preview & only support chinese)"
       }
     ],
     "menus": {
@@ -110,7 +110,7 @@
     }
   },
   "scripts": {
-    "dev": "rollup --config --watch",
+    "dev": "rollup --config --watch --sourcemap",
     "build": "rollup --config",
     "lint": "eslint .",
     "publish": "vsce publish",

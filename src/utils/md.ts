@@ -31,6 +31,7 @@ class MDFile {
       await writeFile(this.to, this.output, {
         flag: 'w',
       })
+      return
     }
 
     const arr = this.to.split('/')

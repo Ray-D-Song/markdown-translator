@@ -1,4 +1,5 @@
 import { writeFile } from 'node:fs/promises'
+import path from 'node:path'
 import { logger } from './logger'
 
 class MDFile {
@@ -15,7 +16,7 @@ class MDFile {
     this.input = input
     this.overwrite = override || false
 
-    this.filename = from.split('/').pop() ?? `${new Date().getTime()}.md`
+    this.filename = path.basename(from) ?? `${new Date().getTime()}.md`
   }
 
   setOutput(output: string) {
@@ -34,13 +35,8 @@ class MDFile {
       return
     }
 
-    const arr = this.to.split('/')
-    const toDirPath = arr
-      .splice(arr.length - 1)
-      .join('/')
-
     await writeFile(
-      this.to === this.from ? `${toDirPath}/translated-${this.filename}` : this.to,
+      this.to === this.from ? path.join(path.dirname(this.to), `translated-${this.filename}`) : this.to,
       this.output,
       {
         flag: 'wx',

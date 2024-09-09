@@ -1,4 +1,5 @@
-import { defineConfigObject, defineExtension, useCommand, useStatusBarItem, useWorkspaceFolders } from 'reactive-vscode'
+import path from 'node:path'
+import { defineConfigObject, defineExtension, useCommand } from 'reactive-vscode'
 import { window, workspace } from 'vscode'
 import { getAllMDFiles, selectDir, selectFile } from './utils/file'
 import { processTranslate } from './processTranslate'
@@ -25,7 +26,7 @@ const { activate, deactivate } = defineExtension(() => {
     try {
       const { input, fileName, from } = await selectFile()
       const toDir = await selectDir()
-      const to = `${toDir}/${fileName}`
+      const to = path.join(toDir, fileName)
 
       const mdFile = new MDFile(
         from,
@@ -55,10 +56,10 @@ const { activate, deactivate } = defineExtension(() => {
         const from = editor.document.uri.fsPath
         const document = await workspace.openTextDocument(editor.document.uri)
         const input = document.getText()
-        const fileName = from.split('/').pop() || ''
+        const fileName = path.basename(from)
 
         const toDir = await selectDir()
-        const to = `${toDir}/${fileName}`
+        const to = path.join(toDir, fileName)
 
         const mdFile = new MDFile(
           from,

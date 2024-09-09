@@ -2,7 +2,7 @@
   "publisher": "Ray-D-Song",
   "name": "markdown-translator",
   "displayName": "markdown translator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "packageManager": "pnpm@9.7.0",
   "description": "Markdown Translator with ChatGPT",

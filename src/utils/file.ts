@@ -1,6 +1,7 @@
+import path from 'node:path'
 import { glob } from 'glob'
-import type { Uri } from 'vscode'
 import { window, workspace } from 'vscode'
+import { logger } from './logger'
 
 async function getAllMDFiles() {
   return await workspace.findFiles('**/*.{md,mdx}', '**/node_modules/**')
@@ -35,9 +36,9 @@ async function selectDir() {
   for (const folder of workspaceFolders || []) {
     const dirs = await glob('**/', { cwd: folder.uri.fsPath, ignore: ['**/node_modules/**', '**/.git/**', '**/.vscode/**', '**/dist/**', '**/.dist/**'] })
     dirItems = dirItems.concat(dirs.map(dir => ({
-      label: dir.split('/').filter(Boolean).pop() || '',
+      label: path.basename(dir),
       description: dir,
-      fsPath: dir === '.' ? `${folder.uri.fsPath}` : `${folder.uri.fsPath}/${dir}`,
+      fsPath: dir === '.' ? folder.uri.fsPath : path.join(folder.uri.fsPath, dir),
     })))
   }
 
@@ -56,5 +57,5 @@ async function selectDir() {
 export {
   selectFile,
   selectDir,
-  getAllMDFiles
+  getAllMDFiles,
 }
